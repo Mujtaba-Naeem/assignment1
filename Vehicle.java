@@ -38,6 +38,14 @@ public abstract class Vehicle implements Movable {
         return color;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
     public void setColor(Color clr) {
         this.color = clr;
     }
