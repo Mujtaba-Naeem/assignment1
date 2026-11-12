@@ -62,6 +62,77 @@ public class CarTest {
         reportResult("Saab moves north correctly", result);
     }
 
+
+// Task 4 :-------------------------------------------------------------------
+
+    // TASK 4: SANITY CHECKS
+
+    // 1. Gas and brake accept only values between 0 and 1
+
+    private static void gasAndBreak() {
+        Volvo240 gasCar = new Volvo240();
+        gasCar.startEngine();
+        double oldSpeed = gasCar.getCurrentSpeed();
+        gasCar.gas(-0.5);
+        boolean negativeGas = gasCar.getCurrentSpeed() == oldSpeed;
+        gasCar.gas(1.5);
+        boolean highGas = gasCar.getCurrentSpeed() == oldSpeed;
+
+        Volvo240 brakeCar = new Volvo240();
+        brakeCar.startEngine();
+        oldSpeed = brakeCar.getCurrentSpeed();
+        brakeCar.brake(-0.5);
+        boolean negativeBrake = brakeCar.getCurrentSpeed() == oldSpeed;
+        brakeCar.brake(1.5);
+        boolean highBrake = brakeCar.getCurrentSpeed() == oldSpeed;
+        boolean result = negativeGas && highGas && negativeBrake && highBrake;
+        reportResult("Gas and brake reject invalid values", result);
+    }
+
+
+    // 2. Current speed stays between 0 and enginePower
+
+    private static void speedLimit() {
+        Volvo240 myVolvo = new Volvo240();
+        myVolvo.startEngine();
+        for (int i = 0; i < 200; i++) {
+            myVolvo.gas(1);
+        }
+        boolean maxSpeed = myVolvo.getCurrentSpeed()
+                <= myVolvo.getEnginePower();
+        for (int i = 0; i < 200; i++) {
+            myVolvo.brake(1);
+        }
+        boolean minSpeed = myVolvo.getCurrentSpeed() >= 0;
+        reportResult("Speed stays within limits", maxSpeed && minSpeed);
+    }
+
+
+    // 3. Gas cannot decrease speed
+
+    private static void gasNotDecreaseSpeed() {
+        Volvo240 myVolvo = new Volvo240();
+        myVolvo.startEngine();
+        double oldSpeed = myVolvo.getCurrentSpeed();
+        myVolvo.gas(1);
+        boolean result = myVolvo.getCurrentSpeed() >= oldSpeed;
+        reportResult("Gas cannot decrease speed", result);
+    }
+
+
+    // 4. Brake cannot increase speed
+
+    private static void brakeNotIncreaseSpeed() {
+        Volvo240 myVolvo = new Volvo240();
+        myVolvo.startEngine();
+        myVolvo.gas(1);
+        double oldSpeed = myVolvo.getCurrentSpeed();
+        myVolvo.brake(1);
+        boolean result = myVolvo.getCurrentSpeed() <= oldSpeed;
+        reportResult("Brake cannot increase speed", result);
+    }
+
+
     static void main() {
         testMoveNorth();
         testBrake();
@@ -71,6 +142,11 @@ public class CarTest {
         testTurbo();
         testEngine();
 
+        // Task 4:
+        gasAndBreak();
+        speedLimit();
+        gasNotDecreaseSpeed();
+        brakeNotIncreaseSpeed();
         //TODO: add and run more tests
     }
 }
